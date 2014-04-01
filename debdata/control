@@ -1,8 +1,8 @@
 Package: hostfileblocklist
-Version: 0.4
+Version: 0.5
 Section: admin
 Maintainer: Carl Smith <feedback@hacker-haven.com>
-Installed-Size: 34776
+Installed-Size: 34780
 Homepage: hacker-haven.com
 Priority: optional
 Architecture: all
