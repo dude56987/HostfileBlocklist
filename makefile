@@ -15,8 +15,8 @@ uninstall:
 	sudo rm /etc/cron.monthly/hostfileupdater
 installed-size:
 	du -sx --exclude DEBIAN ./debian/
-build:
-	sudo make build-deb
+build: 
+	sudo make build-deb;
 build-deb:
 	mkdir -p debian;
 	mkdir -p debian/DEBIAN;
@@ -44,7 +44,9 @@ build-deb:
 	#~ rm -v ./debdata/control.bak
 	rm -v ./debian/DEBIAN/md5sums.bak
 	cp -rv debdata/. debian/DEBIAN/
+	#sudo chown -R root debian
+	du -sx --exclude DEBIAN ./debian/ | sed "s/[abcdefghijklmnopqrstuvwxyz\ /.]//g" > packageSize.txt
 	dpkg-deb --build debian
-	cp -v debian.deb hostfileblocklist_UNSTABLE.deb
+	cp -v debian.deb hostfileblocklist.deb
 	rm -v debian.deb
 	rm -rv debian

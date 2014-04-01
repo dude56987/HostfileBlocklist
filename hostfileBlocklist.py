@@ -1,6 +1,6 @@
 #! /usr/bin/python
 ########################################################################
-# Downloads and compiles a hostfile using multuple sources from the net.
+# Downloads and compiles a hostfile using multiple sources from the net.
 # Copyright (C) 2013  Carl J Smith
 #
 # This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@ import datetime
 # ~ This code is a fucking mess refactor this in some reasonable way.
 # ~ May change project focus to "blocklist generator" ??? as Ive been
 #   working on making the program build this list into a privoxy
-#   blocklist aswell
+#   blocklist as well
 # ~ convert program to classes, so it can be used in a gui and cli
 #   interface
 # ~ maintain multiplatform compatibility
@@ -313,7 +313,7 @@ def buildListOfDomains():
 					test = True
 			if test == False:
 				temp.append(line)
-	print 'Adding "www." variation to all entrys...'
+	print 'Adding "www." variation to all entries...'
 	for line in temp:
 		# only add www. to entrys that dont have it
 		if line[:4] != 'www.':
@@ -323,9 +323,9 @@ def buildListOfDomains():
 	# TODO: in a config file, grabs the ip address of the website and links
 	# TODO: unblock+ that domain name to that ip address so that the program
 	# TODO: can build a hostfile that could unblock content censored though
-	# TODO: DNS means for the user, Although if ran in a blocked enviorment
+	# TODO: DNS means for the user, Although if ran in a blocked environment
 	# TODO: this would fail anyways
-	print 'Removing duplicated entrys and preforming sort...'
+	print 'Removing duplicated entries and preforming sort...'
 	temp = list(sorted(set(temp)))#remove dupes
 	# retrun a sorted and dedupd list
 	return temp
@@ -521,13 +521,13 @@ def installHostfile(commands):
 	print 'Writing the text to file...'
 	compiledHostfile.write(compiledHostfileText)
 	compiledHostfile.close()
-	print "SUCCESS!!!!! :D The Hostsfile was successuflly compiled and installed to the system!"
+	print "SUCCESS!!!!! :D The Hostsfile was successfully compiled and installed to the system!"
 	if os.name == 'nt':
 		raw_input('Press [ENTER] To end the script...') #pause at end of script on windows
 ########################################################################
 # before run check os and privlages if nessary, only if not in debug mode
 if (('-h' in sys.argv)==True) or (('--help' in sys.argv)==True):
-	print "HostfileBlocklist builds a hostfile by aggerating multuple sources"
+	print "HostfileBlocklist builds a hostfile by aggerating multiple sources"
 	print "Copyright (C) 2013  Carl J Smith"
 	print ""
 	print "This program is free software: you can redistribute it and/or modify"
@@ -584,7 +584,38 @@ elif (('-d' in sys.argv)==True) and (('--debug' in sys.argv)==True):
 		else:
 			# if run as root
 			installHostfile(sys.argv)
+			exit()
 else:
-	# run main command with arguments
-	installHostfile(sys.argv)
+	# still need to check if on windows or linux
+	if os.name == 'nt': #if run on windows
+		# below commented code does not work correctly on anything becides windows xp
+		#~ try:
+			#~ # attempts to open a system file to test if program is being run as root on windows
+			#~ open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
+			#~ installHostfile(sys.argv)
+			#~ exit()
+		#~ except:
+			#~ # works on xp broken on windows 7+
+			#~ os.system(('runas /noprofile /user:Administrator "C:/python27/python.exe '+os.path.join(os.path.abspath(os.curdir),'compileHostfile.py"')+' '+(' '.join(sys.argv[1:]))))
+			#~ exit()
+		try:
+			# check if running as admin my opening a system file
+			open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
+			# if success then run the program and exit
+			installHostfile(sys.argv)
+			exit()
+		except:
+			# if program is not run as admin print error and exit
+			print 'ERROR: program is not being run as adminstrator, please launch the program as a adminstrator!'
+			raw_input('Press [ENTER] To end the script...') #pause at end of script on windows
+			exit()
+	elif os.name == 'posix': # if run on linux confirm the user is root
+		if os.geteuid() != 0:
+			print 'Relaunching program as root...'
+			os.system('sudo python '+(os.path.abspath(__file__))+' '+(' '.join(sys.argv[1:])))
+			exit()
+		else:
+			# if run as root
+			installHostfile(sys.argv)
+			exit()
 ########################################################################

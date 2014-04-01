@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Exec=hostfileblocklist-gui
+Name=Hostfile Blocklist Config Editor
+Comment=Edit Hostfile Blocklist Configuration.
+Categories=XFCE;GTK;Settings;DesktopSettings;X-XFCE-SettingsDialog;X-XFCE-SystemSettings;
+OnlyShowIn=XFCE;
+GenericName=Hostfile Editor
+Icon=network-server
+StartupNotify=true
