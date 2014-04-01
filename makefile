@@ -47,6 +47,6 @@ build-deb:
 	#sudo chown -R root debian
 	du -sx --exclude DEBIAN ./debian/ | sed "s/[abcdefghijklmnopqrstuvwxyz\ /.]//g" > packageSize.txt
 	dpkg-deb --build debian
-	cp -v debian.deb hostfileblocklist.deb
+	cp -v debian.deb hostfileblocklist_UNSTABLE.deb
 	rm -v debian.deb
 	rm -rv debian
