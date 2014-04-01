@@ -1,0 +1,5 @@
+# this is a config file for unblocked domains
+# below is a example domain for the unblocked domains
+duckduckgo.com
+# remember when placing domains in this list remove the www. prefix and
+# only add one domain per line
