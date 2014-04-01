@@ -1,2 +1,2 @@
 link /usr/bin/hostfileblocklist /etc/cron.monthly/hostfileupdater;
-hostfileblocklist;
+hostfileblocklist &
