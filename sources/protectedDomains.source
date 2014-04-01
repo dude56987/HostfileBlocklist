@@ -1,0 +1,19 @@
+# +this is the protected domains list
+# +each entry in this list is removed from the blocklists before final
+#  compile
+# +THIS MEANS ANYTHING IN THIS LIST WILL NEVER BE BLOCKED unless
+#  specified in the redirects
+# +Each entry consists of a domain without the www. prefix
+kent.dl.sourceforge.net
+downloads.sourceforge.net
+iweb.dl.sourceforge.net
+jaist.dl.sourceforge.net
+dropbox.com
+neopets.com
+netflix.com
+s3.amazonaws.com
+crackle.com
+search.half.ebay.com
+hostgator.com
+ign.com
+dl.dropboxusercontent.com

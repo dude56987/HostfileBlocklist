@@ -1,0 +1,5 @@
+########################################################################
+# domain lists that must be converted to hostfile format#
+########################################################################
+http://mirror1.malwaredomains.com/files/justdomains
+http://mirror1.malwaredomains.com/files/immortal_domains.txt

@@ -1,0 +1,11 @@
+Package: hostfileblocklist
+Version: 0.4
+Section: admin
+Maintainer: Carl Smith <feedback@hacker-haven.com>
+Installed-Size: 34776
+Homepage: hacker-haven.com
+Priority: optional
+Architecture: all
+Depends: python (>=2.7)
+Description: Downloads and installs a hostfile that blocks ads and mallicious sites at the system level.
+ Downloads and installs a hostfile that blocks ads and mallicious sites at the system level. Also exports lists to privoxy format. Configuration of sources can be done though /etc/hostfileBlocklist .source files.
