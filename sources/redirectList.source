@@ -1,11 +1,11 @@
-# +this is the redirect list
-# +each entry in here is placed like a regular hostfile
-# +this is for manually added redirects to be added at the end of the 
-#  hostfile, entrys in here can be like a normal hostfile
-# +please placed additionally blocked domains inside 
-#  localBackupFiles/supplementalBlocklist.host
-# +To block and not redirect domains for whatever reason use the file
-#  localBackupFiles/miscBlocklist.host 
-# +Below is a example entry(Note the two domains seprated by spaces, you 
-#  can have eight domains pointed to one ip addres per line)
-74.125.227.132 thegoogle.com www.thegoogle.com
+#############################
+# This is the redirect list #
+#############################
+# +Each entry in here is placed like a regular hostfile.
+# +This is for manually added redirects to be added at the end of the hostfile, entries in here can be like a normal hostfile.
+# +Please placed additionally blocked domains inside localBackupFiles/supplementalBlocklist.host
+# +To block and not redirect domains for whatever reason use the file localBackupFiles/miscBlocklist.host 
+# +Below is a example entry(Note the two domains separated by spaces, you can have eight domains pointed to one ip address per line)
+# +The below example redirects the two listed domains to google
+#############################
+74.125.227.132 iamarealwebsite.com www.iamarealwebsite.com

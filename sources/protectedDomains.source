@@ -1,9 +1,10 @@
-# +this is the protected domains list
-# +each entry in this list is removed from the blocklists before final
-#  compile
-# +THIS MEANS ANYTHING IN THIS LIST WILL NEVER BE BLOCKED unless
-#  specified in the redirects
+######################################
+# This is the protected domains list #
+######################################
+# +Each entry in this list is removed from the blocklists before final compile.
+# +THIS MEANS ANYTHING IN THIS LIST WILL NEVER BE BLOCKED unless specified in the redirects list.
 # +Each entry consists of a domain without the www. prefix
+######################################
 kent.dl.sourceforge.net
 downloads.sourceforge.net
 iweb.dl.sourceforge.net
