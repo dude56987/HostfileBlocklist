@@ -241,12 +241,6 @@ def buildListOfDomains():
 	####################################################################
 	# after loading sources, download the files
 	compiledHostfileText = downloadArrayOfHostfiles(hostfiles)
-	# load the previously built hostfile into the list so missing entrys
-	# from new host files or missed downloads will be included
-	if os.path.exists(os.path.join('/etc','localBackupFiles','previousHostfile.host')):
-		compiledHostfileText += '\n'+loadFile(os.path.join('/etc','hostfileBlocklist','previousHostfile.host'))
-	else:
-		compiledHostfileText += '\n'+loadFile(os.path.join(os.path.abspath(os.curdir),'localBackupFiles','previousHostfile.host'))
 	# remove commented lines in text
 	print 'Removing commented lines...'
 	temp = compiledHostfileText.split('\n')
@@ -447,10 +441,11 @@ def installHostfile(commands):
 	listOfDomains = buildListOfDomains()
 	# write hostfile to backups for merge with next iteration if installed to /etc/hostfileBlocklist,otherwise localy write
 	if os.path.exists(os.path.join('/etc','hostfileBlocklist')):
-		writeFile(os.path.join('/etc','hostfileBlocklist','previousHostfile.host'),recombineList(listOfDomains,False))
+		#writeFile(os.path.join('/etc','hostfileBlocklist','previousHostfile.host'),recombineList(listOfDomains,False))
+		writeFile(os.path.join('/etc','hostfileBlocklist','previousHostfile.host'),'\n'.join(listOfDomains))
 	else:
-		writeFile(os.path.join(os.path.abspath(os.curdir),'localBackupFiles','previousHostfile.host'),recombineList(listOfDomains,False))
-	# build a privoxy blocklist
+		#writeFile(os.path.join(os.path.abspath(os.curdir),'localBackupFiles','previousHostfile.host'),recombineList(listOfDomains,False))
+		writeFile(os.path.join(os.path.abspath(os.curdir),'localBackupFiles','previousHostfile.host'),'\n'.join(listOfDomains))
 	if ('-p' in commands) or ('--privoxy' in commands):
 		buildPrivoxyBlocklist(listOfDomains)
 	#recombine list with optimize turned on

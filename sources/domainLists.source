@@ -7,5 +7,7 @@
 ########################################################################
 https://mirror1.malwaredomains.com/files/justdomains
 https://mirror1.malwaredomains.com/files/immortal_domains.txt
+# Previous Hostfile used to keep hostfiles consistant
+previousHostfile.host
 # Uncomment the below line to add the top 500 most visited websites to the blocklist
 #top500.host
