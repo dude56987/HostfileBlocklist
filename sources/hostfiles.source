@@ -14,7 +14,7 @@ https://someonewhocares.org/hosts/zero/hosts
 https://www.malware.com.br/cgi/submit?action=list_hosts_win_127001
 https://sysctl.org/cameleon/hosts.win
 ########################################################################
-#localy stored hostfiles #
+#locally stored hostfiles #
 ########################################################################
 # Manually added files that are missed by other lists
 supplementalBlocklist.host

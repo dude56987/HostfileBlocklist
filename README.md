@@ -1,7 +1,7 @@
 HostfileBlocklist
 =================
 
-Automaticly update your hosts file using online blocklists. Configurable via config files or the GUI.
+Automatically update your hosts file using online blocklists. Configurable via config files or the GUI.
 
 ####Unstable Packages for Ubuntu and Linux Mint
 
@@ -23,4 +23,4 @@ https://github.com/dude56987/HostfileBlocklist/blob/master/hostfileblocklist-gui
 * Online sources are not "trusted", all downloaded lists are striped of domain names and redirected to a ip address defined by the user(0.0.0.0 by default).
 * Almost everything I could think of is modifiable with the config files.
 * Backup of downloaded files is stored.
-* Sites are collected permantly in "/etc/hostfileBlocklist/previousHostfile.host".
+* Sites are collected permanently in "/etc/hostfileBlocklist/previousHostfile.host".
