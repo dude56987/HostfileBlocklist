@@ -3,16 +3,17 @@ HostfileBlocklist
 
 Automatically update your hosts file using online blocklists. Configurable via config files or the GUI.
 
+####The Latest Stable Release can be found at the link below
+
+NOTE: The GUI package requires the main package as a dependency.<br>
+https://github.com/dude56987/HostfileBlocklist/releases/tag/v0.5
+
 ####Unstable Packages for Ubuntu and Linux Mint
+HostfileBlocklist Package<br>
+https://github.com/dude56987/HostfileBlocklist/blob/master/hostfileblocklist_UNSTABLE.deb?raw=true
 
-HostfileBlocklist Package
-
-https://github.com/dude56987/HostfileBlocklist/blob/master/hostfileblocklist_UNSTABLE.deb
-
-HostfileBlocklist-GUI Package
-
-https://github.com/dude56987/HostfileBlocklist/blob/master/hostfileblocklist-gui_UNSTABLE.deb
-
+HostfileBlocklist-GUI Package<br>
+https://github.com/dude56987/HostfileBlocklist/blob/master/hostfileblocklist-gui_UNSTABLE.deb?raw=true
 ####For Windows Users
 1. Install Python if it is not already installed on your system. (https://www.python.org/download/releases/2.7.6/)
 2. Download the source zip file. (https://github.com/dude56987/HostfileBlocklist/archive/master.zip)
