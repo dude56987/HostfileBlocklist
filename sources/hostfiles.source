@@ -2,19 +2,19 @@
 # Primary online host file resources to use for compile #
 ########################################################################
 # mobile based ad hosts file
-http://adaway.sufficientlysecure.org/hosts.txt
-http://hostsfile.mine.nu/hosts0
-http://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&startdate[day]=&startdate[month]=&startdate[year]=&mimetype=plaintext
-http://winhelp2002.mvps.org/hosts.txt
+https://adaway.sufficientlysecure.org/hosts.txt
+https://hostsfile.mine.nu/hosts0
+https://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&startdate[day]=&startdate[month]=&startdate[year]=&mimetype=plaintext
+https://winhelp2002.mvps.org/hosts.txt
 # Link sometimes does not resolve for below hostfile
 https://zeustracker.abuse.ch/blocklist.php?download=hostfile
-http://someonewhocares.org/hosts/zero/hosts
+https://someonewhocares.org/hosts/zero/hosts
 # Below host file blocks porn/ads/productivity killing websites
-#http://hosts-file.net/download/hosts.txt
-http://www.malware.com.br/cgi/submit?action=list_hosts_win_127001
-http://sysctl.org/cameleon/hosts.win
+#https://hosts-file.net/download/hosts.txt
+https://www.malware.com.br/cgi/submit?action=list_hosts_win_127001
+https://sysctl.org/cameleon/hosts.win
 ########################################################################
-#localy stored hostfile lists #
+#localy stored hostfiles #
 ########################################################################
 # Manually added files that are missed by other lists
 supplementalBlocklist.host

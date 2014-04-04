@@ -201,10 +201,16 @@ def downloadArrayOfDomainFiles(arrayName):
 	temp = ''
 	compiledText = ''
 	for fileAddress in arrayName:
-		temp = downloadFileWithBackup(fileAddress);
-		#~ if temp != "FAIL" and temp != None:
-		if temp != "FAIL":
-			compiledText += temp
+		# if the file is stored online somewhere
+		if fileAddress[:4] == 'http':
+			temp = downloadFileWithBackup(fileAddress);
+			if temp != "FAIL": # checks that document loaded correctly
+				compiledText += temp
+		else:
+			# if the file is local just load the file
+			temp = loadFile('/etc/hostfileBlocklist/'+str(fileAddress))
+			if temp != "FAIL": # checks that document loaded correctly
+				compiledText += temp
 	temp = compiledText.split('\n')
 	for line in temp:
 		if line[:1] != '#':
