@@ -2,17 +2,12 @@ show:
 	echo 'Run "make install" as root to install program!'
 run:
 	python hostfileBlocklist
-install:
-	sudo cp hostfileBlocklist.py /usr/bin/hostfileBlocklist
-	sudo chmod +x /usr/bin/hostfileBlocklist
-	sudo mkdir /etc/hostfileBlocklist/
-	sudo cp sources/*.source /etc/hostfileBlocklist/
-	sudo cp localBackupFiles/*.* /etc/hostfileBlocklist/
-	sudo link /usr/bin/hostfileBlocklist /etc/cron.monthly/hostfileupdater
+install: build
+	sudo gdebi --non-interactive hostfileblocklist_UNSTABLE.deb
+	sudo gdebi --non-interactive hostfileblocklist-gui_UNSTABLE.deb
 uninstall:
-	sudo rm -r /etc/hostfileBlocklist/
-	sudo rm /usr/bin/hostfileBlocklist
-	sudo rm /etc/cron.monthly/hostfileupdater
+	sudo apt-get purge hostfileblocklist
+	sudo apt-get purge hostfileblocklist-gui
 installed-size:
 	du -sx --exclude DEBIAN ./debian/
 build: 
@@ -23,29 +18,29 @@ build-deb:
 	mkdir -p debian/usr;
 	mkdir -p debian/usr/bin;
 	mkdir -p debian/etc/hostfileBlocklist
-	# make post and pre install scripts have the correct permissions
-	chmod 775 debdata/postinst
-	chmod 775 debdata/postrm
 	# copy over the binary
 	cp -vf hostfileBlocklist.py ./debian/usr/bin/hostfileblocklist
 	cp -vfr localBackupFiles/. ./debian/etc/hostfileBlocklist
 	cp -vfr sources/. ./debian/etc/hostfileBlocklist
 	# make the program executable
 	chmod +x ./debian/usr/bin/hostfileblocklist
-	# start the md5sums file
-	md5sum ./debian/usr/bin/hostfileblocklist > ./debian/DEBIAN/md5sums
-	# create md5 sums for all the config files transfered over
-	md5sum ./debian/etc/hostfileBlocklist/* >> ./debian/DEBIAN/md5sums
+	# Create the md5sums file
+	find ./debian/ -type f -print0 | xargs -0 md5sum > ./debian/DEBIAN/md5sums
+	# cut filenames of extra junk
 	sed -i.bak 's/\.\/debian\///g' ./debian/DEBIAN/md5sums
-	# the below can not be done in make, bash variables wont work
-	#size=$(du -sx --exclude DEBIAN ./debian/ | sed "s/[abcdefghijklmnopqrstuvwxyz\ /.]//g")
-	#du -sx --exclude DEBIAN ./debian/ | sed "s/[abcdefghijklmnopqrstuvwxyz\ /.\\t]\{1,\}//g" > ./debdata/packagesize
-	#sed -i.bak 's/Installed-Size: [0123456789]\{2,20\}/Installed-Size: $(more ./debdata/packagesize)/g' ./debdata/control
-	#~ rm -v ./debdata/control.bak
+	sed -i.bak 's/\\n*DEBIAN*\\n//g' ./debian/DEBIAN/md5sums
+	sed -i.bak 's/\\n*DEBIAN*//g' ./debian/DEBIAN/md5sums
 	rm -v ./debian/DEBIAN/md5sums.bak
+	# figure out the package size	
+	du -sx --exclude DEBIAN ./debian/ > Installed-Size.txt
+	# copy over package data
 	cp -rv debdata/. debian/DEBIAN/
-	#sudo chown -R root debian
-	du -sx --exclude DEBIAN ./debian/ | sed "s/[abcdefghijklmnopqrstuvwxyz\ /.]//g" > packageSize.txt
+	# fix permissions in package
+	chmod -Rv 775 debian/DEBIAN/
+	chmod -Rv ugo+r debian/
+	chmod -Rv go-w debian/
+	chmod -Rv u+w debian/
+	# build the package
 	dpkg-deb --build debian
 	cp -v debian.deb hostfileblocklist_UNSTABLE.deb
 	rm -v debian.deb
