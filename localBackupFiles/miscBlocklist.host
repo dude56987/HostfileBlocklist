@@ -1,11 +1,26 @@
 # websites you dont want the users to accidentally visit
 # and websites you just want blocked on your network
 0.0.0.0 download.com
-0.0.0.0 www.download.com
 0.0.0.0 bing.com
-0.0.0.0 www.bing.com
 0.0.0.0 yahoo.com
-0.0.0.0 www.yahoo.com
-# If your feeling that way today
+#########################################
+# If your feeling that way today here are some social networks
 #0.0.0.0 facebook.com
-#0.0.0.0 www.facebook.com
+#0.0.0.0 twitter.com
+#0.0.0.0 instagram.com
+#0.0.0.0 myspace.com
+#0.0.0.0 pinterest.com
+#0.0.0.0 livejournal.com
+#0.0.0.0 tagged.com
+#0.0.0.0 orkut.com
+#0.0.0.0 ning.com
+#0.0.0.0 meetup.com
+#0.0.0.0 search.mylife.com
+#0.0.0.0 ask.fm
+#0.0.0.0 m.facebook.com
+#0.0.0.0 pinterest.com
+#########################################
+# also here are some chans
+#0.0.0.0 4chan.com
+#0.0.0.0 8chan.com
+
