@@ -500,11 +500,12 @@ def installHostfile(commands):
 		# if debug flag set exit here and write hosts file localy
 	# determine install method based on a Operating System check
 	elif os.name == 'nt': #if run on windows
+		# DNS service no longer disables the hostfile on windows 7 and up
 		# remove dns service so hostfile can run
-		print 'sc stop "dnscache"'# commands will not show up on window CLI unless printed before launched
-		os.system('sc stop "dnscache"')
-		print 'sc delete "dnscache"'
-		os.system('sc delete "dnscache"')
+		#print 'sc stop "dnscache"'# commands will not show up on window CLI unless printed before launched
+		#os.system('sc stop "dnscache"')
+		#print 'sc delete "dnscache"'
+		#os.system('sc delete "dnscache"')
 		# set install location for windows systems of hosts file
 		compiledHostfile = open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w')
 		# block isp based youtube/netflix/etc. throttling of video
