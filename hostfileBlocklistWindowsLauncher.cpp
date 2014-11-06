@@ -10,6 +10,6 @@ int main(){
 	cout << "#############################################################\n";
 	cout << "!!!PROGRAM MUST BE RUN AS A ADMINSTRATOR TO WORK CORRECTLY!!!\n";
 	cout << "#############################################################\n";
-	system("C:\\\\python27\\python.exe hostfileBlocklist");
+	system("C:\\\\python27\\python.exe hostfileBlocklist.py");
 	return 0;
 }
