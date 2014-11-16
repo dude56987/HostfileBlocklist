@@ -27,3 +27,8 @@ supplementalBlocklist.host
 #torrentTrackerBlocklist.host
 # custom list for small admin things
 #miscBlocklist.host
+# List of the top 500 most visited websites
+# (This is stuff people will likely want to go to)
+# Seriously, leave this one alone unless you are positive you know what your doing
+#top500.host
+
