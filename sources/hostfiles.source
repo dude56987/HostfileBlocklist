@@ -20,9 +20,10 @@ https://sysctl.org/cameleon/hosts.win
 supplementalBlocklist.host
 # compiled version of files on badhosts website, blocks porn spam and annoyances
 #badhosts.host
-# Uncomment below line to block porn sites on pc
+# Uncomment below lines to block porn sites on this pc
 #pornBlocklist.host
-# Uncomment below line to block torrents on pc
+#topPornBlocklist.host
+# Uncomment below line to block torrents on this pc
 #torrentTrackerBlocklist.host
 # custom list for small admin things
 #miscBlocklist.host
