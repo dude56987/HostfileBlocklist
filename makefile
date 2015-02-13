@@ -20,7 +20,7 @@ build-deb:
 	mkdir -p debian/etc/hostfileBlocklist
 	# copy over the binary
 	cp -vf hostfileBlocklist.py ./debian/usr/bin/hostfileblocklist
-	cp -vfr localBackupFiles/. ./debian/etc/hostfileBlocklist
+	cp -vfr localBackupFiles/. ./debian/etc/hostfileBlocklist/localBackupFiles
 	cp -vfr sources/. ./debian/etc/hostfileBlocklist
 	# make the program executable
 	chmod +x ./debian/usr/bin/hostfileblocklist

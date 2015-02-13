@@ -1,7 +1,7 @@
 #! /usr/bin/python
 ########################################################################
 # Downloads and compiles a hostfile using multiple sources from the net.
-# Copyright (C) 2013  Carl J Smith
+# Copyright (C) 2014  Carl J Smith
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,24 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ########################################################################
-import urllib2
-import os
-import re
+import urllib2, os, re, sys, json, datetime
 from socket import gethostname
 from socket import gethostbyname
-import sys
 from getpass import getuser
-import json
-import datetime
-########################################################################
-#TODO:
-# ~ This code is a fucking mess refactor this in some reasonable way.
-# ~ May change project focus to "blocklist generator" ??? as Ive been
-#   working on making the program build this list into a privoxy
-#   blocklist as well
-# ~ convert program to classes, so it can be used in a gui and cli
-#   interface
-# ~ maintain multiplatform compatibility
 ########################################################################
 # create global to store system arguments passed though shell
 def currentDirectory():
@@ -86,7 +72,7 @@ def loadFile(fileName):
 	#if somehow everything fails return fail
 	return False
 ########################################################################
-def loadSourcesFile(primaryFilePath,secondaryFilePath,contentForEmptyConfig):
+def loadSourcesFile(primaryFilePath,secondaryFilePath):
 	hostfiles = []
 	# try to load first path, then second and if it does not exist
 	# create the second path with contentForEmptyConfig
@@ -97,23 +83,17 @@ def loadSourcesFile(primaryFilePath,secondaryFilePath,contentForEmptyConfig):
 		for line in temp:
 			if line[:1] != '#' and line != '':
 				hostfiles.append(line)
-				#~ return line
 	elif os.path.exists(secondaryFilePath):
 		# secondary file path used for debuging on not fully installed program
 		temp = str(loadFile(secondaryFilePath)).split('\n')
 		for line in temp:
 			if line[:1] != '#' and line != '':
 				hostfiles.append(line)
-				#~ return line
 	else:
 		# if neither file exists
-		writeFile(secondaryFilePath,contentForEmptyConfig)
+		print "ERROR: No config files exist!"
 	#return the hostfiles in a array
 	return hostfiles
-########################################################################
-#~ # make this the current working directory
-#~ if os.name == 'posix':
-	#~ os.chdir(currentDirectory())
 ########################################################################
 def downloadFile(fileAddress):
 	try:
@@ -150,7 +130,7 @@ def downloadFileWithBackup(fileAddress):
 	# use download url first
 	orignalAddress = fileAddress
 	fileContent = downloadFile(fileAddress)
-	primaryBackupAddress = os.path.join('/etc','hostfileBlocklist',str(convertFilename(fileAddress)))
+	primaryBackupAddress = os.path.join('/etc','hostfileBlocklist','localBackupFiles',str(convertFilename(fileAddress)))
 	alternateBackupAddress = os.path.join(currentDirectory(),'localBackupFiles',convertFilename(fileAddress))
 	if fileContent == "FAIL":
 		# if download fails load installed backup
@@ -215,8 +195,6 @@ def downloadArrayOfDomainFiles(arrayName):
 	for line in temp:
 		if line[:1] != '#':
 			compiledText += line+'\n'
-			#~ compiledText += 'www.'+line+'\n'
-	# convert the domains in the text to thier standard and add a www. at the begining format
 	return compiledText
 ########################################################################
 def buildListOfDomains():
@@ -229,15 +207,13 @@ def buildListOfDomains():
 	####################################################################
 	filePath = os.path.join('/etc','hostfileBlocklist','hostfiles.source')
 	secondFilePath = os.path.join(os.path.abspath(os.curdir),'sources','hostfiles.source')
-	backupContent = '########################################################################\n# Primary online host file resources to use for compile #\n########################################################################\n# mobile based ad hosts file\n#http://adaway.sufficientlysecure.org/hosts.txt\nhttp://hostsfile.mine.nu/hosts0\nhttp://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&startdate[day]=&startdate[month]=&startdate[year]=&mimetype=plaintext\nhttp://winhelp2002.mvps.org/hosts.txt\n# Link sometimes does not resolve for below hostfile\nhttps://zeustracker.abuse.ch/blocklist.php?download=hostfile\nhttp://someonewhocares.org/hosts/zero/hosts\n# Below host file blocks porn/ads/productivity killing websites\n#http://hosts-file.net/download/hosts.txt\nhttp://www.malware.com.br/cgi/submit?action=list_hosts_win_127001\nhttp://sysctl.org/cameleon/hosts.win\n########################################################################\n#localy stored hostfile lists #\n########################################################################\n# Manually added files that are missed by other lists\nsupplementalBlocklist.host\n# compiled version of files on badhosts website, blocks porn spam and annoyances\n#badhosts.host\n# Uncomment below line to block porn sites on pc\n#pornBlocklist.host\n# Uncomment below line to block torrents on pc\n#torrentTrackerBlocklist.host\n# custom list for small admin things\n#miscBlocklist.host\n'
-	hostfiles = loadSourcesFile(filePath,secondFilePath,backupContent)
+	hostfiles = loadSourcesFile(filePath,secondFilePath)
 	####################################################################
 	# domain lists that must be converted to hostfile format#
 	####################################################################
 	filePath = os.path.join('/etc','hostfileBlocklist','domainLists.source')
 	secondFilePath = os.path.join(os.path.abspath(os.curdir),'sources','domainLists.source')
-	backupContent = '########################################################################\n# domain lists that must be converted to hostfile format#\n########################################################################\nhttp://mirror1.malwaredomains.com/files/justdomains\nhttp://mirror1.malwaredomains.com/files/immortal_domains.txt\n'
-	domainLists = loadSourcesFile(filePath,secondFilePath,backupContent)
+	domainLists = loadSourcesFile(filePath,secondFilePath)
 	####################################################################
 	# after loading sources, download the files
 	compiledHostfileText = downloadArrayOfHostfiles(hostfiles)
@@ -319,12 +295,6 @@ def buildListOfDomains():
 		if line[:4] != 'www.':
 			temp.append('www.'+line)
 			# if this creates dupes they will be removed next
-	# TODO: Add a section here which pings a list of web addresses stored
-	# TODO: in a config file, grabs the ip address of the website and links
-	# TODO: unblock+ that domain name to that ip address so that the program
-	# TODO: can build a hostfile that could unblock content censored though
-	# TODO: DNS means for the user, Although if ran in a blocked environment
-	# TODO: this would fail anyways
 	print 'Removing duplicated entries and preforming sort...'
 	temp = list(sorted(set(temp)))#remove dupes
 	# retrun a sorted and dedupd list
@@ -441,10 +411,8 @@ def installHostfile(commands):
 	listOfDomains = buildListOfDomains()
 	# write hostfile to backups for merge with next iteration if installed to /etc/hostfileBlocklist,otherwise localy write
 	if os.path.exists(os.path.join('/etc','hostfileBlocklist')):
-		#writeFile(os.path.join('/etc','hostfileBlocklist','previousHostfile.host'),recombineList(listOfDomains,False))
 		writeFile(os.path.join('/etc','hostfileBlocklist','previousHostfile.host'),'\n'.join(listOfDomains))
 	else:
-		#writeFile(os.path.join(os.path.abspath(os.curdir),'localBackupFiles','previousHostfile.host'),recombineList(listOfDomains,False))
 		writeFile(os.path.join(os.path.abspath(os.curdir),'localBackupFiles','previousHostfile.host'),'\n'.join(listOfDomains))
 	if ('-p' in commands) or ('--privoxy' in commands):
 		buildPrivoxyBlocklist(listOfDomains)
@@ -501,11 +469,7 @@ def installHostfile(commands):
 	# determine install method based on a Operating System check
 	elif os.name == 'nt': #if run on windows
 		# DNS service no longer disables the hostfile on windows 7 and up
-		# remove dns service so hostfile can run
-		#print 'sc stop "dnscache"'# commands will not show up on window CLI unless printed before launched
-		#os.system('sc stop "dnscache"')
-		#print 'sc delete "dnscache"'
-		#os.system('sc delete "dnscache"')
+		# commands will not show up on window CLI unless printed before launched
 		# set install location for windows systems of hosts file
 		compiledHostfile = open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w')
 		# block isp based youtube/netflix/etc. throttling of video
@@ -557,16 +521,6 @@ if (('-h' in sys.argv)==True) or (('--help' in sys.argv)==True):
 	print '#############################################################'
 elif (('-d' in sys.argv)==True) and (('--debug' in sys.argv)==True):
 	if os.name == 'nt': #if run on windows
-		# below commented code does not work correctly on anything becides windows xp
-		#~ try:
-			#~ # attempts to open a system file to test if program is being run as root on windows
-			#~ open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
-			#~ installHostfile(sys.argv)
-			#~ exit()
-		#~ except:
-			#~ # works on xp broken on windows 7+
-			#~ os.system(('runas /noprofile /user:Administrator "C:/python27/python.exe '+os.path.join(os.path.abspath(os.curdir),'compileHostfile.py"')+' '+(' '.join(sys.argv[1:]))))
-			#~ exit()
 		try:
 			# check if running as admin my opening a system file
 			open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
@@ -590,16 +544,6 @@ elif (('-d' in sys.argv)==True) and (('--debug' in sys.argv)==True):
 else:
 	# still need to check if on windows or linux
 	if os.name == 'nt': #if run on windows
-		# below commented code does not work correctly on anything becides windows xp
-		#~ try:
-			#~ # attempts to open a system file to test if program is being run as root on windows
-			#~ open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
-			#~ installHostfile(sys.argv)
-			#~ exit()
-		#~ except:
-			#~ # works on xp broken on windows 7+
-			#~ os.system(('runas /noprofile /user:Administrator "C:/python27/python.exe '+os.path.join(os.path.abspath(os.curdir),'compileHostfile.py"')+' '+(' '.join(sys.argv[1:]))))
-			#~ exit()
 		try:
 			# check if running as admin my opening a system file
 			open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
