@@ -188,20 +188,21 @@ def downloadArrayOfDomainFiles(arrayName):
 				compiledText += temp
 		else:
 			# if the file is local just load the file
-			temp = loadFile('/etc/hostfileBlocklist/'+str(fileAddress))
+			temp = loadFile('/etc/hostfileBlocklist/localBackupFiles'+str(fileAddress))
 			if temp != "FAIL": # checks that document loaded correctly
 				compiledText += temp
+	# split the text into an array
 	temp = compiledText.split('\n')
 	for line in temp:
+		# remove comments from text
 		if line[:1] != '#':
 			compiledText += line+'\n'
+	# return comment cleaned string of text, seprated by newlines
 	return compiledText
 ########################################################################
 def buildListOfDomains():
 	# some variables
 	compiledHostfileText = '\n\n'
-	#~ hostfiles = [] # array holds list of host files
-	#~ domainLists = [] # array holding domain lists
 	####################################################################
 	# Primary online host file resources to use for compile #
 	####################################################################
@@ -225,21 +226,24 @@ def buildListOfDomains():
 		if line[:1] != '#':
 			#return only the names of the hosts,ignore comments
 			compiledHostfileText += line+'\n'
-	#tradeoff here is its more memory intesive and less cpu
-	# intensive, may need to alter this
 	# clean up hostfile before save
 	print 'Converting tabs to spaces...'
-	compiledHostfileText = re.sub('\t',' ',compiledHostfileText)#convert tabs to spaces for compatibility
+	#convert tabs to spaces for compatibility
+	compiledHostfileText = re.sub('\t',' ',compiledHostfileText)
 	print 'Converting endline formats...'
-	compiledHostfileText = re.sub('\r','\n',compiledHostfileText)#convert returns to newlines for compatibility
-	compiledHostfileText = re.sub('^M','\n',compiledHostfileText)#convert ^M to newlines for compatibility
+	#convert returns to newlines for compatibility
+	compiledHostfileText = re.sub('\r','\n',compiledHostfileText)
+	#convert ^M to newlines for compatibility
+	compiledHostfileText = re.sub('^M','\n',compiledHostfileText)
+	# convert redirects to 0.0.0.0
 	compiledHostfileText = re.sub('127\.0\.0\.1','\n0.0.0.0',compiledHostfileText)
+	# strip www. from begining of entries(this is for later)
 	compiledHostfileText = re.sub('www\.','',compiledHostfileText)
 	print 'Removing broken lines...'
 	compiledHostfileText = re.sub('#',' ',compiledHostfileText)
 	# bad entry that apears after filter of hostfile
 	compiledHostfileText = re.sub('::1 localhost IPv6','',compiledHostfileText)
-	# split and recombine the hostfile to remove extra comments that were missed
+	# split and recombine the hostfile to remove extra spacing that was missed
 	print "Removing empty lines..."
 	while re.search('\n\n',compiledHostfileText) != None:
 		compiledHostfileText = re.sub('\n\n','\n',compiledHostfileText)
