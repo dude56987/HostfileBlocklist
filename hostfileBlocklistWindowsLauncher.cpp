@@ -11,5 +11,7 @@ int main(){
 	cout << "!!!PROGRAM MUST BE RUN AS A ADMINSTRATOR TO WORK CORRECTLY!!!\n";
 	cout << "#############################################################\n";
 	system("C:\\\\python27\\python.exe hostfileBlocklist.py");
+	cout << "Press enter to close the program...\n";
+	cin.get();
 	return 0;
 }

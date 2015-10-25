@@ -492,8 +492,6 @@ def installHostfile(commands):
 	compiledHostfile.write(compiledHostfileText)
 	compiledHostfile.close()
 	print "SUCCESS!!!!! :D The Hostsfile was successfully compiled and installed to the system!"
-	if os.name == 'nt':
-		raw_input('Press [ENTER] To end the script...') #pause at end of script on windows
 ########################################################################
 # before run check os and privlages if nessary, only if not in debug mode
 if (('-h' in sys.argv)==True) or (('--help' in sys.argv)==True):
@@ -534,7 +532,6 @@ elif (('-d' in sys.argv)==True) and (('--debug' in sys.argv)==True):
 		except:
 			# if program is not run as admin print error and exit
 			print 'ERROR: program is not being run as adminstrator, please launch the program as a adminstrator!'
-			raw_input('Press [ENTER] To end the script...') #pause at end of script on windows
 			exit()
 	elif os.name == 'posix': # if run on linux
 		if os.geteuid() != 0:
@@ -557,7 +554,6 @@ else:
 		except:
 			# if program is not run as admin print error and exit
 			print 'ERROR: program is not being run as adminstrator, please launch the program as a adminstrator!'
-			raw_input('Press [ENTER] To end the script...') #pause at end of script on windows
 			exit()
 	elif os.name == 'posix': # if run on linux confirm the user is root
 		if os.geteuid() != 0:
