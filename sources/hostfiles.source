@@ -1,18 +1,17 @@
 ########################################################################
 # Primary online host file resources to use for compile #
 ########################################################################
+# A lot of these websites are not https which is not great
+########################################################################
 # mobile based ad hosts file
-https://adaway.sufficientlysecure.org/hosts.txt
 https://hostsfile.mine.nu/hosts0
-https://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&startdate[day]=&startdate[month]=&startdate[year]=&mimetype=plaintext
-https://winhelp2002.mvps.org/hosts.txt
+http://winhelp2002.mvps.org/hosts.txt
 # Link sometimes does not resolve for below hostfile
 https://zeustracker.abuse.ch/blocklist.php?download=hostfile
-https://someonewhocares.org/hosts/zero/hosts
+http://someonewhocares.org/hosts/zero/hosts
 # Below host file blocks porn/ads/productivity killing websites
-#https://hosts-file.net/download/hosts.txt
-https://www.malware.com.br/cgi/submit?action=list_hosts_win_127001
-https://sysctl.org/cameleon/hosts.win
+#http://hosts-file.net/download/hosts.txt
+http://sysctl.org/cameleon/hosts.win
 ########################################################################
 #locally stored hostfiles #
 ########################################################################
