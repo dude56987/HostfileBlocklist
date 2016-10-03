@@ -10,7 +10,7 @@ uninstall:
 	sudo apt-get purge hostfileblocklist-gui
 installed-size:
 	du -sx --exclude DEBIAN ./debian/
-build: 
+build:
 	sudo make build-deb;
 build-deb:
 	mkdir -p debian;
@@ -18,8 +18,10 @@ build-deb:
 	mkdir -p debian/usr;
 	mkdir -p debian/usr/bin;
 	mkdir -p debian/etc/hostfileBlocklist
+	mkdir -p debian/usr/share/hostfileBlocklist/
 	# copy over the binary
 	cp -vf hostfileBlocklist.py ./debian/usr/bin/hostfileblocklist
+	cp -vf hostfileBlocklistLib.py ./debian/usr/share/hostfileBlocklist/hostfileblocklistLib.py
 	cp -vfr localBackupFiles/. ./debian/etc/hostfileBlocklist/localBackupFiles
 	cp -vfr sources/. ./debian/etc/hostfileBlocklist
 	# make the program executable
@@ -31,7 +33,7 @@ build-deb:
 	sed -i.bak 's/\\n*DEBIAN*\\n//g' ./debian/DEBIAN/md5sums
 	sed -i.bak 's/\\n*DEBIAN*//g' ./debian/DEBIAN/md5sums
 	rm -v ./debian/DEBIAN/md5sums.bak
-	# figure out the package size	
+	# figure out the package size
 	du -sx --exclude DEBIAN ./debian/ > Installed-Size.txt
 	# copy over package data
 	cp -rv debdata/. debian/DEBIAN/
