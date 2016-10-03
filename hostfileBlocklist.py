@@ -264,7 +264,7 @@ def buildListOfDomains():
 	# sort the hostfile
 	print 'Spliting text for sort...'
 	temp = compiledHostfileText.split('\n')
-	
+
 	domainTexts=downloadArrayOfDomainFiles(domainLists).split('\n')
 	print 'Adding domain files...'
 	for line in domainTexts:
@@ -346,7 +346,7 @@ def buildPrivoxyBlocklist(listOfDomains):
 		if domainName != None:
 			# remove www. from entries since privoxy uses the . like *.
 			domainName = re.sub('www\.','.',domainName)
-			# check if line starts with . if not add it to start and append 
+			# check if line starts with . if not add it to start and append
 			# to the new array
 			if domainName[:1] == '.':
 				temp.append(domainName)
@@ -437,7 +437,7 @@ def installHostfile(commands):
 		for line in loadFile(os.path.join('sources','hostfiles.source')).split('\n'):
 			if line[:1] != '#':
 					temp += '# '+line + '\n'
-					
+
 	temp += '################################################\n'
 	# comment to show when hostfile was compiled
 	currentTime = datetime.datetime.now()
@@ -458,7 +458,7 @@ def installHostfile(commands):
 	buildSuccess = buildUnblocks()
 	if buildSuccess != False:
 		compiledHostfileText += buildSuccess
-	
+
 	compiledHostfileText = compiledHostfileText.replace('0.0.0.0 ',(str(configData['routeToIp'])+' '))
 	temp = None
 	if ('-d' in commands) or ('--debug' in commands):
@@ -476,92 +476,87 @@ def installHostfile(commands):
 		# commands will not show up on window CLI unless printed before launched
 		# set install location for windows systems of hosts file
 		compiledHostfile = open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w')
-		# block isp based youtube/netflix/etc. throttling of video
-		print 'netsh advfirewall firewall add rule name="videoBufferSpeedBoost" dir=in action=block remoteip=173.194.55.0/24,206.111.0.0/16 enable=yes'
-		os.system('netsh advfirewall firewall add rule name="videoBufferSpeedBoost" dir=in action=block remoteip=173.194.55.0/24,206.111.0.0/16 enable=yes')
 	elif os.name == 'posix': # if run on linux
 		# install into location
 		compiledHostfile = open('/etc/hosts','w')
-		# block isp based youtube/netflix/etc. throttling of video
-		os.system('sudo apt-get install ufw --assume-yes')
-		os.system('sudo ufw enable')
-		os.system('sudo ufw deny from 173.194.55.0/24')
-		os.system('sudo ufw deny from 206.111.0.0/16')
 	# write data to hostsfile
 	print 'Writing the text to file...'
 	compiledHostfile.write(compiledHostfileText)
 	compiledHostfile.close()
 	print "SUCCESS!!!!! :D The Hostsfile was successfully compiled and installed to the system!"
 ########################################################################
-# before run check os and privlages if nessary, only if not in debug mode
-if (('-h' in sys.argv)==True) or (('--help' in sys.argv)==True):
-	print "HostfileBlocklist builds a hostfile by aggerating multiple sources"
-	print "Copyright (C) 2013  Carl J Smith"
-	print ""
-	print "This program is free software: you can redistribute it and/or modify"
-	print "it under the terms of the GNU General Public License as published by"
-	print "the Free Software Foundation, either version 3 of the License, or"
-	print "(at your option) any later version."
-	print ""
-	print "This program is distributed in the hope that it will be useful,"
-	print "but WITHOUT ANY WARRANTY; without even the implied warranty of"
-	print "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the"
-	print "GNU General Public License for more details."
-	print ""
-	print "You should have received a copy of the GNU General Public License"
-	print "along with this program.  If not, see <http://www.gnu.org/licenses/>."
-	print "#############################################################"
-	print "-h or --help"
-	print "    Displays this menu"
-	print "-d or --debug"
-	print "    Builds a hostfile and saves it to the current working directory"
-	print "    as a text file. When ran this way the program will not install"
-	print "    the hostfile to the system."
-	print "-p or --privoxy"
-	print "    Builds a blocklist using the hostfile sites that is compatible"
-	print "    with the privoxy proxy server."
-	print '#############################################################'
-elif (('-d' in sys.argv)==True) and (('--debug' in sys.argv)==True):
-	if os.name == 'nt': #if run on windows
-		try:
-			# check if running as admin my opening a system file
-			open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
-			# if success then run the program and exit
-			installHostfile(sys.argv)
-			exit()
-		except:
-			# if program is not run as admin print error and exit
-			print 'ERROR: program is not being run as adminstrator, please launch the program as a adminstrator!'
-			exit()
-	elif os.name == 'posix': # if run on linux
-		if os.geteuid() != 0:
-			print 'Relaunching program as root...'
-			os.system('sudo python '+(os.path.abspath(__file__))+' '+(' '.join(sys.argv[1:])))
-			exit()
-		else:
-			# if run as root
-			installHostfile(sys.argv)
-			exit()
-else:
-	# still need to check if on windows or linux
-	if os.name == 'nt': #if run on windows
-		try:
-			# check if running as admin my opening a system file
-			open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
-			# if success then run the program and exit
-			installHostfile(sys.argv)
-			exit()
-		except:
-			# if program is not run as admin print error and exit
-			print 'ERROR: program is not being run as adminstrator, please launch the program as a adminstrator!'
-			exit()
-	elif os.name == 'posix': # if run on linux confirm the user is root
-		if os.geteuid() != 0:
-			print 'Relaunching program as root...'
-			os.system('sudo python '+(os.path.abspath(__file__))+' '+(' '.join(sys.argv[1:])))
-			exit()
-		else:
-			# if run as root
-			installHostfile(sys.argv)
-			exit()
+def main(argv):
+	# before run check os and privlages if nessary, only if not in debug mode
+	if (('-h' in argv)==True) or (('--help' in argv)==True):
+		print "HostfileBlocklist builds a hostfile by aggerating multiple sources"
+		print "Copyright (C) 2013  Carl J Smith"
+		print ""
+		print "This program is free software: you can redistribute it and/or modify"
+		print "it under the terms of the GNU General Public License as published by"
+		print "the Free Software Foundation, either version 3 of the License, or"
+		print "(at your option) any later version."
+		print ""
+		print "This program is distributed in the hope that it will be useful,"
+		print "but WITHOUT ANY WARRANTY; without even the implied warranty of"
+		print "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the"
+		print "GNU General Public License for more details."
+		print ""
+		print "You should have received a copy of the GNU General Public License"
+		print "along with this program.  If not, see <http://www.gnu.org/licenses/>."
+		print "#############################################################"
+		print "-h or --help"
+		print "    Displays this menu"
+		print "-d or --debug"
+		print "    Builds a hostfile and saves it to the current working directory"
+		print "    as a text file. When ran this way the program will not install"
+		print "    the hostfile to the system."
+		print "-p or --privoxy"
+		print "    Builds a blocklist using the hostfile sites that is compatible"
+		print "    with the privoxy proxy server."
+		print '#############################################################'
+	elif (('-d' in argv)==True) and (('--debug' in argv)==True):
+		if os.name == 'nt': #if run on windows
+			try:
+				# check if running as admin my opening a system file
+				open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
+				# if success then run the program and exit
+				installHostfile(argv)
+				exit()
+			except:
+				# if program is not run as admin print error and exit
+				print 'ERROR: program is not being run as adminstrator, please launch the program as a adminstrator!'
+				exit()
+		elif os.name == 'posix': # if run on linux
+			if os.geteuid() != 0:
+				print 'Relaunching program as root...'
+				os.system('sudo python '+(os.path.abspath(__file__))+' '+(' '.join(argv[1:])))
+				exit()
+			else:
+				# if run as root
+				installHostfile(argv)
+				exit()
+	else:
+		# still need to check if on windows or linux
+		if os.name == 'nt': #if run on windows
+			try:
+				# check if running as admin my opening a system file
+				open((os.environ['WINDIR']+'/system32/drivers/etc/hosts'),'w').close()
+				# if success then run the program and exit
+				installHostfile(argv)
+				exit()
+			except:
+				# if program is not run as admin print error and exit
+				print 'ERROR: program is not being run as adminstrator, please launch the program as a adminstrator!'
+				exit()
+		elif os.name == 'posix': # if run on linux confirm the user is root
+			if os.geteuid() != 0:
+				print 'Relaunching program as root...'
+				os.system('sudo python '+(os.path.abspath(__file__))+' '+(' '.join(argv[1:])))
+				exit()
+			else:
+				# if run as root
+				installHostfile(argv)
+				exit()
 ########################################################################
+# launch the main program to process all CLI arguments
+main(sys.argv)
