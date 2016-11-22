@@ -1,7 +1,7 @@
 #! /usr/bin/python
 ########################################################################
 # Downloads and compiles a hostfile using multiple sources from the net.
-# Copyright (C) 2014  Carl J Smith
+# Copyright (C) 2016  Carl J Smith
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 import urllib2, os, re, sys, json, datetime
 from socket import gethostname
 from socket import gethostbyname
-from getpass import getuser
 ########################################################################
 # create global to store system arguments passed though shell
 def currentDirectory():
@@ -53,7 +52,7 @@ def writeFile(fileName,contentToWrite):
 def loadFile(fileName):
 	try:
 		print "Loading :",fileName
-		fileObject=open(fileName,'r');
+		fileObject=open(fileName,'r')
 	except:
 		print "Failed to load :",fileName
 		return "FAIL"
@@ -121,8 +120,8 @@ def convertFilename(inputFileName):
 		temp += ((str(inputFileName.split('/')[len(inputFileName.split('/'))-1])).split('?')[0])
 	else:
 		temp += (str(inputFileName.split('/')[len(inputFileName.split('/'))-1]))
-	temp = re.sub('\.','_',temp)
-	temp = re.sub('/','_',temp)
+	temp = temp.replace('.','_')
+	temp = temp.replace('/','_')
 	temp += '.host'
 	return temp
 ########################################################################
@@ -183,7 +182,7 @@ def downloadArrayOfDomainFiles(arrayName):
 	for fileAddress in arrayName:
 		# if the file is stored online somewhere
 		if fileAddress[:4] == 'http':
-			temp = downloadFileWithBackup(fileAddress);
+			temp = downloadFileWithBackup(fileAddress)
 			if temp != "FAIL": # checks that document loaded correctly
 				compiledText += temp
 		else:
@@ -236,13 +235,13 @@ def buildListOfDomains():
 	#convert ^M to newlines for compatibility
 	compiledHostfileText = re.sub('^M','\n',compiledHostfileText)
 	# convert redirects to 0.0.0.0
-	compiledHostfileText = re.sub('127\.0\.0\.1','\n0.0.0.0',compiledHostfileText)
+	compiledHostfileText = compiledHostfileText.replace('127.0.0.1','\n0.0.0.0')
 	# strip www. from begining of entries(this is for later)
-	compiledHostfileText = re.sub('www\.','',compiledHostfileText)
+	compiledHostfileText = compiledHostfileText.replace('www.','')
 	print 'Removing broken lines...'
-	compiledHostfileText = re.sub('#',' ',compiledHostfileText)
+	compiledHostfileText = compiledHostfileText.replace('#',' ')
 	# bad entry that apears after filter of hostfile
-	compiledHostfileText = re.sub('::1 localhost IPv6','',compiledHostfileText)
+	compiledHostfileText = compiledHostfileText.replace('::1 localhost IPv6','')
 	# split and recombine the hostfile to remove extra spacing that was missed
 	print "Removing empty lines..."
 	while re.search('\n\n',compiledHostfileText) != None:
@@ -269,7 +268,7 @@ def buildListOfDomains():
 	print 'Adding domain files...'
 	for line in domainTexts:
 		if line[:1] != '#':
-			temp.append(line);
+			temp.append(line)
 	# remove protected domains from list
 	print 'Removing protected domains from list...'
 	if os.path.exists(os.path.join('/etc/','hostfileBlocklist','protectedDomains.source')):
@@ -345,7 +344,7 @@ def buildPrivoxyBlocklist(listOfDomains):
 	for domainName in listOfDomains:
 		if domainName != None:
 			# remove www. from entries since privoxy uses the . like *.
-			domainName = re.sub('www\.','.',domainName)
+			domainName = domainName.replace('www.','.')
 			# check if line starts with . if not add it to start and append
 			# to the new array
 			if domainName[:1] == '.':
@@ -431,12 +430,13 @@ def installHostfile(commands):
 	# write the sources for the hostfiles to hostfile as comments
 	if os.path.exists('/etc/hostfileBlocklist/hostfiles.source'):
 		for line in loadFile('/etc/hostfileBlocklist/hostfiles.source').split('\n'):
-			if line[:1] != '#':
+			# check for comments or blank lines
+			if line[:1] != '#' and line != '':
 				temp += '# '+line + '\n'
 	else:
 		for line in loadFile(os.path.join('sources','hostfiles.source')).split('\n'):
-			if line[:1] != '#':
-					temp += '# '+line + '\n'
+			if line[:1] != '#' and line != '':
+				temp += '# '+line + '\n'
 
 	temp += '################################################\n'
 	# comment to show when hostfile was compiled
