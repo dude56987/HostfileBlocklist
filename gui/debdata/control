@@ -1,10 +1,10 @@
 Package: hostfileblocklist-gui
-Version: 0.1
+Version: 0.2.0
 Section: admin
 Maintainer: Carl J Smith <feedback@hacker-haven.com>
 Installed-Size: 32
 Priority: optional
 Architecture: all
-Depends: python (>=2.7), hostfileblocklist (>=0.5), xterm (>=0.0), leafpad (>=0.0)
+Depends: python (>=2.7), hostfileblocklist (>=0.5), xterm
 Description: GUI for configuring the hostfileblocklist program
  A Python TK based interface for editing the config files of hostfileblocklist.
