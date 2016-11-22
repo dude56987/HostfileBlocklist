@@ -1,17 +1,15 @@
 show:
 	echo 'Run "make install" as root to install program!'
-	
+
 run:
 	python hostfileblocklist-gui.py
-install:
-	sudo apt-get install transmission-gtk --assume-yes
-	sudo cp hostfileblocklist-gui.py /usr/bin/hostfileblocklist-gui
-	sudo chmod +x /usr/bin/hostfileblocklist-gui
+install: build
+	sudo gdebi ../hostfileblocklist-gui_UNSTABLE.deb --no
 uninstall:
 	sudo rm /usr/bin/hostfileblocklist-gui
 installed-size:
 	du -sx --exclude DEBIAN ./debian/
-build: 
+build:
 	sudo make build-deb;
 build-deb:
 	mkdir -p debian;
